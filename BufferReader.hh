@@ -18,15 +18,14 @@
 
 #include <list>
 #include <string>
-#include <utility>
 
 #include "Buffer.hh"
-#include "src_1.hh"
+#include "public.hh"
 
 class BufferReader {
 public:
     BufferReader(std::string&& name, Buffer& buffer,
-        std::list<std::pair<char, char>>&& range)
+        std::list<Range<char>>&& range)
         : name(name)
         , ranges(range)
         , buffer(buffer)
@@ -65,6 +64,6 @@ private:
     };
 
     std::string name;
-    std::list<std::pair<char, char>> ranges;
+    std::list<Range<char>> ranges;
     Buffer& buffer;
 };

@@ -19,7 +19,7 @@
 #include <string>
 
 #include "Buffer.hh"
-#include "src_1.hh"
+#include "public.hh"
 
 class BufferWriter {
 public:
