@@ -1,7 +1,9 @@
 override CXX = clang++
 
 ifneq ($(shell uname),Darwin)
-LDFLAGS += -fuse-ld=lld
+LDFLAGS += \
+	-fuse-ld=lld \
+	-Wl,--as-needed
 endif
 
 CXXFLAGS += \
@@ -19,8 +21,7 @@ LDFLAGS += \
 	-rtlib=compiler-rt \
 	-stdlib=libc++ \
 	-flto=thin \
-	-pthread \
-	-Wl,--as-needed
+	-pthread
 
 CXXFLAGS += $(shell pkg-config --cflags ncurses)
 LDFLAGS += $(shell pkg-config --libs ncurses)

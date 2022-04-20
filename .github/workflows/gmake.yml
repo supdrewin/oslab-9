@@ -16,4 +16,4 @@ jobs:
     - name: install ncurses
       run: brew install ncurses
     - name: build all
-      run: PKG_CONFIG_PATH="/usr/local/opt/ncurses/lib/pkgconfig" gmake
+      run: PKG_CONFIG_PATH="/usr/local/opt/ncurses/lib/pkgconfig" make
