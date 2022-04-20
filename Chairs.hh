@@ -50,7 +50,7 @@ public:
             }
         })
         , pop([&]() {
-            auto i { 0 };
+            size_t i { 0 };
 
             while (RUNNING) {
                 if (this->del_person(i)) {
