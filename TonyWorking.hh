@@ -1,4 +1,4 @@
-/// TonyWorking.hh - This file is a part of oslib-9 (not project)
+/// TonyWorking.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 
 class TonyWorking {
 public:
-    TonyWorking(std::mutex* mutex)
+    TonyWorking(std::mutex& mutex)
         : mutex(mutex)
     {
     }
@@ -43,8 +43,8 @@ public:
 private:
     auto sleep() -> void
     {
-        this->mutex->unlock();
+        this->mutex.unlock();
     }
 
-    std::mutex* mutex;
+    std::mutex& mutex;
 };

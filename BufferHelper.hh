@@ -1,4 +1,4 @@
-/// BufferHelper.hh - This file is a part of oslib-9 (not project)
+/// BufferHelper.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -22,16 +22,18 @@
 
 class BufferHelper {
 public:
-    BufferHelper(std::deque<char>* deque,
-        std::mutex* mutex)
+    BufferHelper(std::deque<char>& deque,
+        std::mutex& mutex)
         : deque(deque)
         , mutex(mutex)
     {
     }
 
+    BufferHelper(BufferHelper const&) = delete;
+
     ~BufferHelper()
     {
-        this->mutex->unlock();
+        this->mutex.unlock();
     }
 
     auto read() -> char
@@ -61,10 +63,10 @@ public:
 
     auto operator*() -> std::deque<char>&
     {
-        return *this->deque;
+        return this->deque;
     }
 
 private:
-    std::deque<char>* deque;
-    std::mutex* mutex;
+    std::deque<char>& deque;
+    std::mutex& mutex;
 };

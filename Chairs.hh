@@ -1,4 +1,4 @@
-/// Chairs.hh - This file is a part of oslib-9 (not project)
+/// Chairs.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -62,8 +62,11 @@ public:
                 this_thread::sleep_for(100ms);
             }
         })
+        , print_mutex()
         , add_dist(add_msec.first, add_msec.second)
         , del_dist(del_msec.first, del_msec.second)
+        , chairs()
+        , tony()
     {
     }
 
@@ -125,21 +128,23 @@ public:
     }
 
 private:
+    std::mutex print_mutex;
+
     auto locked_mvprintw(
         std::function<void()> mvprintw)
         -> void
     {
-        this->mutex.lock();
+        this->print_mutex.lock();
 
         mvprintw();
         refresh();
 
-        this->mutex.unlock();
+        this->print_mutex.unlock();
     }
 
     std::uniform_int_distribution<size_t> add_dist;
     std::uniform_int_distribution<size_t> del_dist;
+
     std::deque<Chair> chairs;
-    std::mutex mutex;
     Tony tony;
 };

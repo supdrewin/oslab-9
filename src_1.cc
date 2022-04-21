@@ -1,4 +1,4 @@
-/// src_1.cc - This file is a part of oslib-9 (not project)
+/// src_1.cc - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it

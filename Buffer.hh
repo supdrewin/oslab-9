@@ -1,4 +1,4 @@
-/// Buffer.hh - This file is a part of oslib-9 (not project)
+/// Buffer.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -24,11 +24,17 @@
 
 class Buffer {
 public:
+    Buffer()
+        : deque()
+        , mutex()
+    {
+    }
+
     auto lock() -> std::unique_ptr<BufferHelper>
     {
         this->mutex.lock();
         return std::unique_ptr<BufferHelper> {
-            new BufferHelper(&deque, &mutex)
+            new BufferHelper(deque, mutex)
         };
     }
 
@@ -36,7 +42,7 @@ public:
     {
         return std::unique_ptr<BufferHelper> {
             this->mutex.try_lock()
-                ? new BufferHelper(&deque, &mutex)
+                ? new BufferHelper(deque, mutex)
                 : nullptr
         };
     }
