@@ -100,6 +100,6 @@
 ### Test
 
 ``` shell
-$ ./src_1
-$ ./src_2
+$ ./impl1.exe
+$ ./impl2.exe
 ```
