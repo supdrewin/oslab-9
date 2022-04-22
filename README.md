@@ -22,7 +22,7 @@
   - optional
 
     ``` shell
-    $ pacman -S clang lld libc++
+    $ pacman -S clang lld libc++ libunwind
     ```
 
 - Debian
@@ -36,7 +36,7 @@
   - optional
 
     ``` shell
-    $ apt install clang lld libc++-dev
+    $ apt install clang lld libc++-dev libunwind-dev
     ```
 
 - FreeBSD

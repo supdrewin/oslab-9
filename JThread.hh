@@ -18,6 +18,8 @@
 
 #include "StopSource.hh"
 #include "StopToken.hh"
+
+#define HAS_JTHREAD_CLASS
 #include "Thread.hh"
 
 class JThread {

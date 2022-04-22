@@ -7,29 +7,62 @@ on:
     branches: [ master ]
 
 jobs:
-  macos-build:
+  macOS-build:
 
     runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: install ncurses
-      run: |
-        brew install ncurses
-        echo 'export PATH="/usr/local/opt/ncurses/bin:$PATH"' \
-          >>/Users/runner/.bash_profile
-    - name: build all
-      run: . ~/.bash_profile && make
+    - name: Install Pre-requested
+      run: brew install llvm ncurses
+    - name: Build all
+      run: PATH="/usr/local/opt/ncurses/bin:$PATH" make
 
-  linux-build:
+  Arch-build:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: install ncurses
-      run: apt install libncurses-dev clang lld libc++-dev
-    - name: gcc build all
+    - name: Install Arch Linux
+      run: |
+        wget https://github.com/supdrewin/linux-learning/releases/download/rootfs/rootfs.tar.xz
+        sudo tar xf rootfs.tar.xz
+        sudo cp /etc/resolv.conf rootfs/etc
+        sudo cp /etc/locale.gen rootfs/etc
+        sudo bash -c 'echo "Server = https://mirrors.ustc.edu.cn/archlinux/\$repo/os/\$arch" >>rootfs/etc/pacman.d/mirrorlist'
+        sudo mount rootfs rootfs --bind
+        sudo mount /dev rootfs/dev --bind
+        sudo mount /proc rootfs/proc --bind
+        sudo mount /sys rootfs/sys --bind
+        sudo chroot rootfs locale-gen
+        sudo chroot rootfs pacman-key --init
+        sudo chroot rootfs pacman-key --populate
+    - name: Install Pre-requested
+      run: |
+        sudo chroot rootfs pacman -Syu --noconfirm base-devel git ncurses clang lld libc++ libunwind
+        sudo chroot rootfs git clone https://github.com/supdrewin/oslab-9.git
+    - name: GCC build all
+      run: sudo chroot rootfs env CXX=g++ make -C oslab-9
+    - name: Clang build all
+      run: |
+        sudo chroot rootfs make -C oslab-9 clean
+        sudo chroot rootfs env CXX=clang++ make -C oslab-9
+
+  Ubuntu-build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Pre-requested
+      run: |
+        sudo apt update
+        sudo apt full-upgrade
+        sudo apt install build-essential libncurses-dev clang lld libc++-dev libunwind-dev
+    - name: GCC build all
       run: CXX=g++ make
-    - name: clang build all
-      run: CXX=clang++ make
+    - name: Clang build all
+      run: |
+        make clean
+        CXX=clang++ make

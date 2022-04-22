@@ -38,7 +38,7 @@ auto push_event(StopToken stop_token,
         this_thread::sleep_for(
             chrono::milliseconds(msec));
     }
-};
+}
 
 auto pop_event(StopToken stop_token,
     Chairs<>* self) -> void
@@ -53,7 +53,7 @@ auto pop_event(StopToken stop_token,
         using namespace std;
         this_thread::sleep_for(100ms);
     }
-};
+}
 
 class ImplRtData {
 public:

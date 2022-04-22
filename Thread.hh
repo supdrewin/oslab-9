@@ -22,11 +22,15 @@ using Thread = std::thread;
 
 #if defined(__cpp_lib_jthread)
 
+#if !defined(HAS_JTHREAD_CLASS)
+
 using StopSource = std::stop_source;
 using StopToken = std::stop_token;
 using JThread = std::jthread;
 
-#elif __cplusplus >= 202002L
+#endif
+
+#elif __cplusplus > 201703L
 
 #include "JThread.hh"
 

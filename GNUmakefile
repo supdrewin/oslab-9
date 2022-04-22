@@ -1,16 +1,20 @@
-include tools/$(shell uname)-$(CXX).mk
-include tools/ncurses6.mk
+#
+# GNUmakefile
+#
 
 CXXFLAGS += \
-	-std=c++20 \
+	-std=c++2a \
 	-pedantic \
 	-Werror \
 	-Wall \
 	-Wextra \
 	-Weffc++ \
 	-Wsign-conversion \
-	-Wno-unknown-pragmas \
+	-pipe \
 	-O2
+
+include tools/$(shell uname)-$(CXX).mk
+include tools/ncurses6.mk
 
 CXXFLAGS += $(shell $(NCURSES_CONFIG) --cflags)
 LDLIBS += $(shell $(NCURSES_CONFIG) --libs)

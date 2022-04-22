@@ -16,10 +16,11 @@
 
 #pragma once
 
-#pragma comment(lib, "ncurses")
+#pragma comment(lib, "curses")
+#pragma comment(lib, "gcc_s")
 #pragma comment(lib, "pthread")
 
-#include <ncurses.h>
+#include <curses.h>
 #include <random>
 #include <utility>
 
