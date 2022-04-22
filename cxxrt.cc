@@ -17,25 +17,22 @@
 #include "cxxrt.hh"
 #include "public.hh"
 
-auto call_back(StopToken stop_token,
+auto resize_event(StopToken stop_token,
     WINDOW* win) -> void
 {
     decltype(win->_regbottom) bottom { 0 };
 
     while (!stop_token.stop_requested()) {
-        using namespace std;
-        this_thread::sleep_for(
-            PRINTER.refresh_rate());
+        if (win->_regbottom != bottom) {
+            PRINTER.process(clear);
+            PRINTER.process(mvprintw,
+                bottom = win->_regbottom, 0,
+                "Press 'q' to exit...");
 
-        if (bottom == win->_regbottom) {
-            continue;
+            using namespace std;
+            this_thread::sleep_for(
+                PRINTER.refresh_rate());
         }
-
-        bottom = win->_regbottom;
-
-        PRINTER.process(clear);
-        PRINTER.process(mvprintw, bottom, 0,
-            "Press 'q' to exit...");
     }
 }
 
@@ -54,23 +51,20 @@ auto refresh_event(StopToken stop_token,
 auto main() -> int
 {
 #pragma mark - cfg
-    auto win = initscr();
+    auto window = initscr();
 
     PRINTER.process(cbreak);
     PRINTER.process(noecho);
 
+    PRINTER.set_resize_event(resize_event, window);
     PRINTER.set_refresh_event(refresh_event, &PRINTER);
-    PRINTER.set_call_back(call_back, win);
 #pragma mark - cfg
 
 #pragma mark - run
     {
         CppRtData threads;
 
-        while (true) {
-            if ('q' == getch()) {
-                break;
-            }
+        while ('q' != getch()) {
         }
 #pragma mark - run
 

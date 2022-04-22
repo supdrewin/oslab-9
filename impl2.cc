@@ -84,9 +84,10 @@ private:
     Chairs<> chairs;
     JThread push;
     JThread pop;
-} impl_rt_data(
-    std::make_pair(200, 5000),
-    std::make_pair(200, 5000));
+} impl_rt_data {
+    { 200, 5000 },
+    { 200, 5000 },
+};
 
 CppRtData::CppRtData()
 {

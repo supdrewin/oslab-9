@@ -29,8 +29,8 @@ public:
     Printer(size_t refresh_rate)
         : mutex()
         , refresh_event()
-        , call_back()
-        , _refresh_rate(refresh_rate)
+        , resize_event()
+        , rate(refresh_rate)
     {
     }
 
@@ -44,30 +44,30 @@ public:
 
     auto refresh_rate() -> RefreshRateType
     {
-        return this->_refresh_rate;
+        return this->rate;
     }
 
     template <typename Fn, typename... Args>
     auto set_refresh_event(Fn&& refresh_event, Args&&... args)
         -> void
     {
-        JThread re(refresh_event, args...);
-        this->refresh_event.swap(re);
+        JThread thread(refresh_event, args...);
+        this->refresh_event.swap(thread);
     }
 
     template <typename Fn, typename... Args>
-    auto set_call_back(Fn&& call_back, Args&&... args)
+    auto set_resize_event(Fn&& call_back, Args&&... args)
         -> void
     {
-        JThread cb(call_back, args...);
-        this->call_back.swap(cb);
+        JThread thread(call_back, args...);
+        this->resize_event.swap(thread);
     }
 
     auto wait_to_stop() -> void
     {
-        if (this->call_back.joinable()) {
-            this->call_back.request_stop();
-            this->call_back.join();
+        if (this->resize_event.joinable()) {
+            this->resize_event.request_stop();
+            this->resize_event.join();
         }
 
         if (this->refresh_event.joinable()) {
@@ -105,9 +105,9 @@ private:
     std::mutex mutex;
 
     JThread refresh_event;
-    JThread call_back;
+    JThread resize_event;
 
-    RefreshRateType _refresh_rate;
+    RefreshRateType rate;
 };
 
 #define HAS_PRINTER_CLASS

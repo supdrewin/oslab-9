@@ -7,17 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-  macOS-build:
-
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Install Pre-requested
-      run: brew install llvm ncurses
-    - name: Build all
-      run: PATH="/usr/local/opt/ncurses/bin:$PATH" make
-
   Arch-build:
 
     runs-on: ubuntu-latest
@@ -66,3 +55,14 @@ jobs:
       run: |
         make clean
         CXX=clang++ make
+
+  macOS-build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Pre-requested
+      run: brew install llvm ncurses
+    - name: Build all
+      run: PATH="/usr/local/opt/ncurses/bin:$PATH" make
