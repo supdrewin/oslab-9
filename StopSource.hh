@@ -1,4 +1,4 @@
-/// Thread.hh - This file is a part of oslab-9 (not project)
+/// StopSource.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -16,18 +16,25 @@
 
 #pragma once
 
-#include <thread>
+#include <memory>
 
-using Thread = std::thread;
+struct StopSource {
+    using StateType = std::shared_ptr<bool>;
 
-#if defined(__cpp_lib_jthread)
+    std::shared_ptr<bool> state;
 
-using StopSource = std::stop_source;
-using StopToken = std::stop_token;
-using JThread = std::jthread;
+    StopSource(bool* state = nullptr)
+        : state(state)
+    {
+    }
 
-#elif __cplusplus >= 202002L
+    auto swap(StopSource& other) -> void
+    {
+        other.state.swap(this->state);
+    }
 
-#include "JThread.hh"
-
-#endif
+    auto operator()(bool state) -> void
+    {
+        *this->state.get() = state;
+    }
+};

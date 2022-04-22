@@ -46,7 +46,7 @@ public:
     auto set_refresh_event(Fn&& refresh_event, Args&&... args)
         -> void
     {
-        Thread re(refresh_event, args...);
+        JThread re(refresh_event, args...);
         this->refresh_event.swap(re);
     }
 
@@ -59,7 +59,7 @@ public:
     auto set_call_back(Fn&& call_back, Args&&... args)
         -> void
     {
-        Thread cb(call_back, args...);
+        JThread cb(call_back, args...);
         this->call_back.swap(cb);
     }
 
@@ -91,8 +91,8 @@ private:
 
     std::mutex mutex;
 
-    Thread refresh_event;
-    Thread call_back;
+    JThread refresh_event;
+    JThread call_back;
 
     RefreshRateType _refresh_rate;
 };

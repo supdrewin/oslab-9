@@ -67,8 +67,8 @@ public:
 
     auto run() -> void
     {
-        Thread push(push_event, &this->chairs);
-        Thread pop(pop_event, &this->chairs);
+        JThread push(push_event, &this->chairs);
+        JThread pop(pop_event, &this->chairs);
 
         this->push.swap(push);
         this->pop.swap(pop);
@@ -82,8 +82,8 @@ public:
 
 private:
     Chairs<> chairs;
-    Thread push;
-    Thread pop;
+    JThread push;
+    JThread pop;
 } impl_rt_data(
     std::make_pair(200, 5000),
     std::make_pair(200, 5000));

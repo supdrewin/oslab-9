@@ -1,4 +1,4 @@
-/// Thread.hh - This file is a part of oslab-9 (not project)
+/// StopToken.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -16,18 +16,25 @@
 
 #pragma once
 
-#include <thread>
+#include "StopSource.hh"
 
-using Thread = std::thread;
+class StopToken {
+public:
+    explicit StopToken(StopSource& stop_src)
+        : state(stop_src.state.get())
+    {
+    }
 
-#if defined(__cpp_lib_jthread)
+    explicit StopToken(StopSource const& stop_src)
+        : state(stop_src.state.get())
+    {
+    }
 
-using StopSource = std::stop_source;
-using StopToken = std::stop_token;
-using JThread = std::jthread;
+    auto stop_requested() -> bool
+    {
+        return *this->state.get();
+    }
 
-#elif __cplusplus >= 202002L
-
-#include "JThread.hh"
-
-#endif
+private:
+    StopSource::StateType state;
+};

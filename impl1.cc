@@ -47,12 +47,12 @@ public:
 
     auto run() -> void
     {
-        Thread threads[] {
-            Thread(buffer_writer_1),
-            Thread(buffer_writer_2),
-            Thread(buffer_reader_1),
-            Thread(buffer_reader_2),
-            Thread(buffer_reader_3),
+        JThread threads[] {
+            JThread(buffer_writer_1),
+            JThread(buffer_writer_2),
+            JThread(buffer_reader_1),
+            JThread(buffer_reader_2),
+            JThread(buffer_reader_3),
         };
 
         using std::swap;
@@ -76,7 +76,7 @@ private:
     BufferReader buffer_reader_2;
     BufferReader buffer_reader_3;
 
-    Thread threads[5];
+    JThread threads[5];
 } impl_rt_data;
 
 CppRtData::CppRtData()
