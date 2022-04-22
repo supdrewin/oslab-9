@@ -77,6 +77,7 @@ auto main() -> int
 #pragma mark - end
     }
 
+    PRINTER.wait_to_stop();
     return endwin();
 #pragma mark - end
 }

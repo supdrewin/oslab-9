@@ -42,6 +42,11 @@ public:
     template <typename T>
     T* operator=(ConstRefType) = delete;
 
+    auto refresh_rate() -> RefreshRateType
+    {
+        return this->_refresh_rate;
+    }
+
     template <typename Fn, typename... Args>
     auto set_refresh_event(Fn&& refresh_event, Args&&... args)
         -> void
@@ -50,17 +55,25 @@ public:
         this->refresh_event.swap(re);
     }
 
-    auto refresh_rate() -> RefreshRateType
-    {
-        return this->_refresh_rate;
-    }
-
     template <typename Fn, typename... Args>
     auto set_call_back(Fn&& call_back, Args&&... args)
         -> void
     {
         JThread cb(call_back, args...);
         this->call_back.swap(cb);
+    }
+
+    auto wait_to_stop() -> void
+    {
+        if (this->call_back.joinable()) {
+            this->call_back.request_stop();
+            this->call_back.join();
+        }
+
+        if (this->refresh_event.joinable()) {
+            this->refresh_event.request_stop();
+            this->refresh_event.join();
+        }
     }
 
     template <typename Fn, typename... Args>
