@@ -14,10 +14,10 @@
 /// You should have received a copy of the GNU General Public License along with
 /// this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "cpprt.hh"
+#include "cxxrt.hh"
 #include "public.hh"
 
-auto call_back(std::stop_token stop_token,
+auto call_back(StopToken stop_token,
     WINDOW* win) -> void
 {
     decltype(win->_regbottom) bottom { 0 };
@@ -39,7 +39,7 @@ auto call_back(std::stop_token stop_token,
     }
 }
 
-auto refresh_event(std::stop_token stop_token,
+auto refresh_event(StopToken stop_token,
     Printer* self) -> void
 {
     while (!stop_token.stop_requested()) {

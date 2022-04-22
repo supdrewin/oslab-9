@@ -17,9 +17,10 @@
 #include <cstddef>
 
 #include "Chairs.hh"
-#include "cpprt.hh"
+#include "Thread.hh"
+#include "cxxrt.hh"
 
-auto push_event(std::stop_token stop_token,
+auto push_event(StopToken stop_token,
     Chairs<>* self) -> void
 {
     size_t i { 0 }, n { 0 };
@@ -39,7 +40,7 @@ auto push_event(std::stop_token stop_token,
     }
 };
 
-auto pop_event(std::stop_token stop_token,
+auto pop_event(StopToken stop_token,
     Chairs<>* self) -> void
 {
     size_t i { 0 };
@@ -66,8 +67,8 @@ public:
 
     auto run() -> void
     {
-        std::jthread push(push_event, &this->chairs);
-        std::jthread pop(pop_event, &this->chairs);
+        Thread push(push_event, &this->chairs);
+        Thread pop(pop_event, &this->chairs);
 
         this->push.swap(push);
         this->pop.swap(pop);
@@ -81,8 +82,8 @@ public:
 
 private:
     Chairs<> chairs;
-    std::jthread push;
-    std::jthread pop;
+    Thread push;
+    Thread pop;
 } impl_rt_data(
     std::make_pair(200, 5000),
     std::make_pair(200, 5000));

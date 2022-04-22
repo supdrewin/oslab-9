@@ -21,8 +21,9 @@
 
 #include <ncurses.h>
 #include <random>
-#include <thread>
 #include <utility>
+
+#include "Thread.hh"
 
 template <typename T>
 using Range = std::pair<T, T>;

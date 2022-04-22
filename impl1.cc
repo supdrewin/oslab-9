@@ -19,7 +19,7 @@
 #include "Buffer.hh"
 #include "BufferReader.hh"
 #include "BufferWriter.hh"
-#include "cpprt.hh"
+#include "cxxrt.hh"
 
 class ImplRtData {
 public:
@@ -47,15 +47,16 @@ public:
 
     auto run() -> void
     {
-        std::jthread threads[] {
-            std::jthread(buffer_writer_1),
-            std::jthread(buffer_writer_2),
-            std::jthread(buffer_reader_1),
-            std::jthread(buffer_reader_2),
-            std::jthread(buffer_reader_3),
-
+        Thread threads[] {
+            Thread(buffer_writer_1),
+            Thread(buffer_writer_2),
+            Thread(buffer_reader_1),
+            Thread(buffer_reader_2),
+            Thread(buffer_reader_3),
         };
-        std::swap(this->threads, threads);
+
+        using std::swap;
+        swap(this->threads, threads);
     }
 
     auto stop() -> void
@@ -75,7 +76,7 @@ private:
     BufferReader buffer_reader_2;
     BufferReader buffer_reader_3;
 
-    std::jthread threads[5];
+    Thread threads[5];
 } impl_rt_data;
 
 CppRtData::CppRtData()

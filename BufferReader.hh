@@ -32,7 +32,7 @@ public:
     {
     }
 
-    auto operator()(std::stop_token stop_token) -> void
+    auto operator()(StopToken stop_token) -> void
     {
         while (!stop_token.stop_requested()) {
 #pragma mark - sync
