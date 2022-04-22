@@ -1,5 +1,7 @@
 # OS Lab 9
 
+[![GNUmakefile](https://github.com/supdrewin/oslab-9/actions/workflows/gmake.yml/badge.svg)](https://github.com/supdrewin/oslab-9/actions/workflows/gmake.yml)
+
 ## Dependencies
 
 ### List
