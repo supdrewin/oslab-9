@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  macos-build:
 
     runs-on: macos-latest
 
@@ -19,6 +19,17 @@ jobs:
         echo 'export PATH="/usr/local/opt/ncurses/bin:$PATH"' \
           >>/Users/runner/.bash_profile
     - name: build all
-      run: |
-        . ~/.bash_profile
-        make
+      run: . ~/.bash_profile && make
+
+  linux-build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: install ncurses
+      run: apt install libncurses-dev clang lld libc++-dev
+    - name: gcc build all
+      run: CXX=g++ make
+    - name: clang build all
+      run: CXX=clang++ make
