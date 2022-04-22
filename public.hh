@@ -28,13 +28,9 @@ template <typename T>
 using Range = std::pair<T, T>;
 
 static std::random_device RANDOM_DEVICE;
-static auto RUNNING { true };
 
-static auto call_back(WINDOW* win, void*)
-    -> int
-{
-    mvprintw(win->_regbottom, 0,
-        "Press 'q' to exit...");
+#include "Printer.hh"
 
-    return refresh() == OK;
-}
+#if defined(HAS_PRINTER_CLASS)
+static Printer PRINTER(200);
+#endif

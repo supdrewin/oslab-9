@@ -32,9 +32,9 @@ public:
     {
     }
 
-    auto operator()() -> void
+    auto operator()(std::stop_token stop_token) -> void
     {
-        while (RUNNING) {
+        while (!stop_token.stop_requested()) {
             auto c { this->gen() };
 
 #pragma mark - sync
@@ -42,9 +42,9 @@ public:
                 auto buf { this->buffer.lock() };
                 buf->write(c);
 
-                mvprintw(0, 0, "%s write '%c'!",
+                PRINTER.process(
+                    mvprintw, 0, 0, "%s write '%c'!",
                     this->name.c_str(), c);
-                refresh();
             }
 #pragma mark - sync
 

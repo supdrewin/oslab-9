@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <list>
+#include <forward_list>
 #include <string>
 
 #include "Buffer.hh"
@@ -25,25 +25,25 @@
 class BufferReader {
 public:
     BufferReader(std::string&& name, Buffer& buffer,
-        std::list<Range<char>>&& range)
+        std::forward_list<Range<char>>&& range)
         : name(name)
-        , ranges(range)
         , buffer(buffer)
+        , ranges(range)
     {
     }
 
-    auto operator()() -> void
+    auto operator()(std::stop_token stop_token) -> void
     {
-        while (RUNNING) {
+        while (!stop_token.stop_requested()) {
 #pragma mark - sync
             {
                 auto buf { this->buffer.lock() };
                 auto c { buf->take_if(cmp) };
 
                 if ('\0' != c) {
-                    mvprintw(1, 0, "%s take '%c'!",
+                    PRINTER.process(
+                        mvprintw, 1, 0, "%s take '%c'!",
                         this->name.c_str(), c);
-                    refresh();
                 }
             }
 #pragma mark - sync
@@ -54,6 +54,11 @@ public:
     }
 
 private:
+    std::string name;
+    Buffer& buffer;
+
+    std::forward_list<Range<char>> ranges;
+
     std::function<bool(char)> cmp = [&](char c) {
         for (auto const& range : this->ranges) {
             if (c >= range.first && c <= range.second) {
@@ -62,8 +67,4 @@ private:
         }
         return false;
     };
-
-    std::string name;
-    std::list<Range<char>> ranges;
-    Buffer& buffer;
 };

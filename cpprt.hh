@@ -1,4 +1,4 @@
-/// src_2.cc - This file is a part of oslab-9 (not project)
+/// cpprt.hh - This file is a part of oslab-9 (not project)
 /// Copyright © 2022  Supdrewin <https://github.com/supdrewin/oslib-9>
 ///
 /// This program is free software: you can redistribute it and/or modify it
@@ -14,35 +14,12 @@
 /// You should have received a copy of the GNU General Public License along with
 /// this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "Chair.hh"
-#include "Chairs.hh"
-#include "Tony.hh"
-#include "public.hh"
+#pragma once
 
-auto main() -> int
-{
-    auto rng { std::make_pair(200, 5000) };
-    Chairs<4> chairs(rng, rng);
+struct CppRtData {
+public:
+    CppRtData();
+    ~CppRtData();
+};
 
-    auto win = initscr();
-    noecho();
-
-    use_window(win, call_back, nullptr);
-
-    std::thread threads[] {
-        std::thread(chairs.push),
-        std::thread(chairs.pop),
-    };
-
-    while (RUNNING) {
-        if ('q' == getch()) {
-            RUNNING = false;
-        }
-    }
-
-    for (auto& thread : threads) {
-        thread.join();
-    }
-
-    return endwin();
-}
+class ImplRtData;

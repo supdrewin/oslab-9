@@ -14,15 +14,15 @@ CXXFLAGS += \
 CXXFLAGS += $(shell ncurses6-config --cflags)
 LDLIBS += $(shell ncurses6-config --libs)
 
-all: src_1.exe src_2.exe
+all: impl1.exe impl2.exe
 
-src_1.exe.: src_1.cc
-src_2.exe: src_2.cc
+impl1.exe.: impl1.cc cpprt.cc
+impl2.exe: impl2.cc cpprt.cc
 
 clean:
 	$(RM) *.exe
 
 .PHONY: clean
 
-%.exe: %.cc
+%.exe: %.cc cpprt.cc
 	$(LINK.cc) -o $@ $^ $(LDLIBS)

@@ -22,6 +22,8 @@
 
 class BufferHelper {
 public:
+    using ConstRefType = BufferHelper const&;
+
     BufferHelper(std::deque<char>& deque,
         std::mutex& mutex)
         : deque(deque)
@@ -29,7 +31,13 @@ public:
     {
     }
 
-    BufferHelper(BufferHelper const&) = delete;
+    BufferHelper(ConstRefType) = delete;
+
+    template <typename T>
+    T operator=(ConstRefType) = delete;
+
+    template <typename T>
+    T* operator=(ConstRefType) = delete;
 
     ~BufferHelper()
     {
@@ -46,7 +54,7 @@ public:
     auto take_if(std::function<bool(char)> cmp)
         -> char
     {
-        auto c = this->read();
+        auto c { this->read() };
 
         if (cmp(c)) {
             (**this).pop_front();
